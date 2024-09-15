@@ -8,6 +8,6 @@
 #include <cstdlib> // exit()
 #include <cstring> // strlen()
 
-void run_parent_process()
+void run_parent_process();
 
 #endif

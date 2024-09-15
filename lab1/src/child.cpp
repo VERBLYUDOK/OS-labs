@@ -19,12 +19,11 @@ int main() {
     }
 
     // Запись суммы в файл
-    file << "Сумма: " << sum << std::endl;
+    file << "Сумма: " << sum << '\n';
     file.close();  // Закрываем файл
 
     // Передача результата родительскому процессу через pipe2 (STDOUT)
-    std::cout << "Сумма: " << sum << std::endl;
-    fflush(stdout); // Очищаем стандартный вывод
+    std::cout << "Сумма: " << sum << '\n';
 
     return 0;
 }
