@@ -17,15 +17,21 @@ void run_parent_process() {
 
     if (pid > 0) {
         // Родительский процесс
-        close(pipe1[0]);  // Закрываем конец чтения pipe1
-        close(pipe2[1]);  // Закрываем конец записи pipe2
 
         char fileName[100];
-        printf("Введите имя файла: ");
-        scanf("%s", fileName);
+        std::cout << "Введите имя файла: ";
+        std::cin >> fileName;
 
         // Отправляем имя файла дочернему процессу
-        write(pipe1[1], fileName, strlen(fileName) + 1);
+        write(pipe1[1], &fileName, strlen(fileName) + 1);
+
+        // Отправляем числа дочернему процессу
+        float num;
+        std::cout << "Введите числа (EOF для завершения): ";
+        while (std::cin >> num) {
+            write(pipe1[1], &num, sizeof(num));
+        }
+        
         close(pipe1[1]);
 
         // Ждем завершения дочернего процесса
@@ -36,8 +42,15 @@ void run_parent_process() {
         read(pipe2[0], buffer, 100);
         close(pipe2[0]);
 
-        printf("Результат от дочернего процесса: %s\n", buffer);
+        std::cout << "Результат от дочернего процесса: " << buffer << std::endl;
     } else {
+        // Дочерний процесс
+
+        dup2(pipe1[0], 0); // Чтобы принять fileName через пайп
+        dup2(pipe2[1], 1); // Чтобы передать результат родителю через пайп
+        close(pipe1[0]);  // Закрываем конец чтения pipe1
+        close(pipe2[1]);  // Закрываем конец записи pipe2
+
         // Дочерний процесс через exec
         char *args[] = {"./child", NULL};
         execvp(args[0], args);
