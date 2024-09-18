@@ -14,6 +14,11 @@ int main() {
 
     // Чтение чисел из pipe1 и подсчет суммы
     float num, sum = 0;
+    if (read(0, &num, sizeof(num)) == 0) {
+        std::cout << "я урод";
+    } else {
+        std::cout << "я x2урод";
+    }
     while (read(0, &num, sizeof(num)) > 0) {
         sum += num;
     }

@@ -2,19 +2,29 @@
 #include <lab1.h>
 
 TEST(ParentProcessTest, CheckSumCalculation) {
-    // Устанавливаем переменные
-    const char* testFileName = "test_file.txt";
+    const char* testFileName = "output.txt";
     
     // Ввод для родительского процесса
-    FILE* input = freopen("test_input.txt", "w+", stdin); // freopen для переопределения stdin
-    fprintf(input, "%s\n7.6 5.5 0\n", testFileName);
+    //FILE* input = freopen("test_input.txt", "w+", stdin); // freopen для переопределения stdin
+    std::ofstream test_input("test_input.txt");
+    test_input << testFileName << '\n';  // Название файла для вывода
+    test_input << "7.6 5.5";     // Ввод чисел (0 для завершения)
+    test_input.close();
+
+    // Перенаправляем стандартный ввод на файл test_input.txt
+    std::ifstream input("test_input.txt");
+    std::streambuf* cinbuf = std::cin.rdbuf(); // Сохраняем оригинальный std::cin
+    std::cin.rdbuf(input.rdbuf()); // Перенаправляем std::cin на файл
 
     // Запускаем родительский процесс
     run_parent_process();
 
+    std::cin.rdbuf(cinbuf);
+    input.close();
+
     // Проверяем, что файл был создан
     std::ifstream resultFile(testFileName);
-    ASSERT_TRUE(resultFile.is_open()) << "Файл не был создан";
+    ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
 
     // Читаем результат
     std::string line;
@@ -25,7 +35,7 @@ TEST(ParentProcessTest, CheckSumCalculation) {
     EXPECT_EQ(line, "Сумма: 13.100000") << "Неверный результат суммы в файле";
 
     // Удаляем тестовый файл
-    std::remove(testFileName);
+    //std::remove(testFileName);
 }
 TEST(ParentProcessTest, EmptyInput) {
     // Устанавливаем переменные
@@ -40,7 +50,7 @@ TEST(ParentProcessTest, EmptyInput) {
 
     // Проверяем, что файл был создан
     std::ifstream resultFile(testFileName);
-    ASSERT_TRUE(resultFile.is_open()) << "Файл не был создан";
+    ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
 
     // Читаем результат
     std::string line;
@@ -66,7 +76,7 @@ TEST(ParentProcessTest, LargeNumbersInput) {
 
     // Проверяем, что файл был создан
     std::ifstream resultFile(testFileName);
-    ASSERT_TRUE(resultFile.is_open()) << "Файл не был создан";
+    ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
 
     // Читаем результат
     std::string line;

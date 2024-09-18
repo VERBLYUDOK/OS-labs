@@ -34,6 +34,7 @@ void run_parent_process() {
         std::cout << "Введите числа (EOF для завершения):\n";
         while (std::cin >> num) {
             write(pipe1[1], &num, sizeof(num));
+            std::cout << "записал " << num << '\n';
         }
         close(pipe1[1]);
 
