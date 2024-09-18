@@ -27,15 +27,19 @@ void run_parent_process() {
         std::cin >> fileName;
 
         // Отправляем имя файла дочернему процессу
-        write(pipe1[1], &fileName, strlen(fileName) + 1);
+        //write(pipe1[1], &fileName, strlen(fileName) + 1);
+        write(pipe1[1], &fileName, 100);
 
         // Отправляем числа дочернему процессу
         float num;
         std::cout << "Введите числа (EOF для завершения):\n";
-        while (std::cin >> num) {
-            write(pipe1[1], &num, sizeof(num));
-            std::cout << "записал " << num << '\n';
-        }
+        // while (std::cin >> num) {
+        //     write(pipe1[1], &num, sizeof(num));
+        // }
+        std::cin >> num;
+        write(pipe1[1], &num, sizeof(num));
+        std::cin >> num;
+        write(pipe1[1], &num, sizeof(num));
         close(pipe1[1]);
 
         // Ждем завершения дочернего процесса

@@ -52,6 +52,23 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "format": "cpp",
-        "text_encoding": "cpp"
+        "text_encoding": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "sstream": "cpp",
+        "any": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "chrono": "cpp",
+        "csignal": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "unordered_set": "cpp",
+        "iomanip": "cpp",
+        "cinttypes": "cpp"
     }
 }
