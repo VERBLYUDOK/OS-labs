@@ -177,7 +177,12 @@ lab1/CMakeFiles/main.dir/main.cpp.o: /workspaces/OS-labs/lab1/main.cpp \
  /usr/local/include/c++/14.2.0/bits/basic_ios.tcc \
  /usr/local/include/c++/14.2.0/bits/ostream.tcc \
  /usr/local/include/c++/14.2.0/istream \
- /usr/local/include/c++/14.2.0/bits/istream.tcc \
+ /usr/local/include/c++/14.2.0/bits/istream.tcc /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+ /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
  /usr/local/include/c++/14.2.0/fstream \
  /usr/local/include/c++/14.2.0/bits/codecvt.h \
  /usr/local/include/c++/14.2.0/x86_64-linux-gnu/bits/basic_file.h \

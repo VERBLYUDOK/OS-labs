@@ -21,25 +21,21 @@ void run_parent_process() {
         // Закрывваем неиспользуемое родительским процессом
         close(pipe1[0]);
         close(pipe2[1]);
-
-        char fileName[100];
+        char fileName[50];
         std::cout << "Введите имя файла:\n";
         std::cin >> fileName;
 
         // Отправляем имя файла дочернему процессу
-        //write(pipe1[1], &fileName, strlen(fileName) + 1);
-        write(pipe1[1], &fileName, 100);
+        write(pipe1[1], &fileName, strlen(fileName) + 1);
+        //write(pipe1[1], &fileName, 50);
+        sleep(1);
 
         // Отправляем числа дочернему процессу
         float num;
         std::cout << "Введите числа (EOF для завершения):\n";
-        // while (std::cin >> num) {
-        //     write(pipe1[1], &num, sizeof(num));
-        // }
-        std::cin >> num;
-        write(pipe1[1], &num, sizeof(num));
-        std::cin >> num;
-        write(pipe1[1], &num, sizeof(num));
+        while (std::cin >> num) {
+            write(pipe1[1], &num, sizeof(num));
+        }
         close(pipe1[1]);
 
         // Ждем завершения дочернего процесса

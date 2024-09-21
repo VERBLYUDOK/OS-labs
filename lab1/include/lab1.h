@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include <fcntl.h> // open()
 #include <fstream> // Для работы с файлами через std::ofstream
 #include <unistd.h> // Для системных вызовов POSIX (fork(), pipe(), dup2(), read(), write())
 #include <sys/wait.h> // wait()

@@ -2,8 +2,8 @@
 
 int main() {
     // Чтение имени файла из pipe1 (STDIN)
-    char fileName[100];
-    read(0, fileName, 100);
+    char fileName[50];
+    read(0, fileName, 50);
 
     // Открытие файла для записи
     std::ofstream file(fileName);
@@ -14,18 +14,9 @@ int main() {
 
     // Чтение чисел из pipe1 и подсчет суммы
     float num, sum = 0;
-    // if (read(0, &num, sizeof(num)) == 0) {
-    //     std::cout << "я урод";
-    // } else {
-    //     std::cout << "я x2урод";
-    // }
-    // while (read(0, &num, sizeof(num)) > 0) {
-    //     sum += num;
-    // }
-    read(0, &num, sizeof(num));
-    sum += num;
-    read(0, &num, sizeof(num));
-    sum += num;
+    while (read(0, &num, sizeof(num)) > 0) {
+        sum += num;
+    }
 
     // Запись суммы в файл
     file << "Сумма: " << sum << '\n';
