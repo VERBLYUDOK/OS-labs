@@ -1,2 +1,2 @@
 # OS-labs
-# exe в build/bin
+exe в build/bin
