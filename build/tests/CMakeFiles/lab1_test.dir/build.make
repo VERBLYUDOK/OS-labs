@@ -73,29 +73,29 @@ tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o: tests/CMakeFiles/lab1_test.dir/f
 tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o: /workspaces/OS-labs/tests/lab1_test.cpp
 tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o: tests/CMakeFiles/lab1_test.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/OS-labs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o"
-	cd /workspaces/OS-labs/build/tests && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o -MF CMakeFiles/lab1_test.dir/lab1_test.cpp.o.d -o CMakeFiles/lab1_test.dir/lab1_test.cpp.o -c /workspaces/OS-labs/tests/lab1_test.cpp
+	cd /workspaces/OS-labs/build/tests && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o -MF CMakeFiles/lab1_test.dir/lab1_test.cpp.o.d -o CMakeFiles/lab1_test.dir/lab1_test.cpp.o -c /workspaces/OS-labs/tests/lab1_test.cpp
 
 tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lab1_test.dir/lab1_test.cpp.i"
-	cd /workspaces/OS-labs/build/tests && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/tests/lab1_test.cpp > CMakeFiles/lab1_test.dir/lab1_test.cpp.i
+	cd /workspaces/OS-labs/build/tests && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/tests/lab1_test.cpp > CMakeFiles/lab1_test.dir/lab1_test.cpp.i
 
 tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lab1_test.dir/lab1_test.cpp.s"
-	cd /workspaces/OS-labs/build/tests && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/tests/lab1_test.cpp -o CMakeFiles/lab1_test.dir/lab1_test.cpp.s
+	cd /workspaces/OS-labs/build/tests && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/tests/lab1_test.cpp -o CMakeFiles/lab1_test.dir/lab1_test.cpp.s
 
 tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o: tests/CMakeFiles/lab1_test.dir/flags.make
 tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o: /workspaces/OS-labs/lab1/src/parent.cpp
 tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o: tests/CMakeFiles/lab1_test.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/OS-labs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o"
-	cd /workspaces/OS-labs/build/tests && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o -MF CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o.d -o CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o -c /workspaces/OS-labs/lab1/src/parent.cpp
+	cd /workspaces/OS-labs/build/tests && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o -MF CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o.d -o CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o -c /workspaces/OS-labs/lab1/src/parent.cpp
 
 tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.i"
-	cd /workspaces/OS-labs/build/tests && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/src/parent.cpp > CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.i
+	cd /workspaces/OS-labs/build/tests && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/src/parent.cpp > CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.i
 
 tests/CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.s"
-	cd /workspaces/OS-labs/build/tests && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/src/parent.cpp -o CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.s
+	cd /workspaces/OS-labs/build/tests && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/src/parent.cpp -o CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.s
 
 # Object files for target lab1_test
 lab1_test_OBJECTS = \

@@ -1,1 +1,1 @@
-/usr/local/bin/c++  -Werror=maybe-uninitialized CMakeFiles/lab1_test.dir/lab1_test.cpp.o CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o -o ../bin/lab1_test  ../lib/libgtest_main.a ../lib/libgtest.a 
+/usr/local/bin/g++  -Werror=maybe-uninitialized CMakeFiles/lab1_test.dir/lab1_test.cpp.o CMakeFiles/lab1_test.dir/__/lab1/src/parent.cpp.o -o ../bin/lab1_test  ../lib/libgtest_main.a ../lib/libgtest.a 

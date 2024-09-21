@@ -73,29 +73,29 @@ lab1/CMakeFiles/main.dir/main.cpp.o: lab1/CMakeFiles/main.dir/flags.make
 lab1/CMakeFiles/main.dir/main.cpp.o: /workspaces/OS-labs/lab1/main.cpp
 lab1/CMakeFiles/main.dir/main.cpp.o: lab1/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/OS-labs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object lab1/CMakeFiles/main.dir/main.cpp.o"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lab1/CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /workspaces/OS-labs/lab1/main.cpp
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lab1/CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /workspaces/OS-labs/lab1/main.cpp
 
 lab1/CMakeFiles/main.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/main.cpp.i"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/main.cpp > CMakeFiles/main.dir/main.cpp.i
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/main.cpp > CMakeFiles/main.dir/main.cpp.i
 
 lab1/CMakeFiles/main.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/main.cpp.s"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/main.cpp -o CMakeFiles/main.dir/main.cpp.s
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/main.cpp -o CMakeFiles/main.dir/main.cpp.s
 
 lab1/CMakeFiles/main.dir/src/parent.cpp.o: lab1/CMakeFiles/main.dir/flags.make
 lab1/CMakeFiles/main.dir/src/parent.cpp.o: /workspaces/OS-labs/lab1/src/parent.cpp
 lab1/CMakeFiles/main.dir/src/parent.cpp.o: lab1/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/OS-labs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object lab1/CMakeFiles/main.dir/src/parent.cpp.o"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lab1/CMakeFiles/main.dir/src/parent.cpp.o -MF CMakeFiles/main.dir/src/parent.cpp.o.d -o CMakeFiles/main.dir/src/parent.cpp.o -c /workspaces/OS-labs/lab1/src/parent.cpp
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lab1/CMakeFiles/main.dir/src/parent.cpp.o -MF CMakeFiles/main.dir/src/parent.cpp.o.d -o CMakeFiles/main.dir/src/parent.cpp.o -c /workspaces/OS-labs/lab1/src/parent.cpp
 
 lab1/CMakeFiles/main.dir/src/parent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/src/parent.cpp.i"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/src/parent.cpp > CMakeFiles/main.dir/src/parent.cpp.i
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/src/parent.cpp > CMakeFiles/main.dir/src/parent.cpp.i
 
 lab1/CMakeFiles/main.dir/src/parent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/parent.cpp.s"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/src/parent.cpp -o CMakeFiles/main.dir/src/parent.cpp.s
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/src/parent.cpp -o CMakeFiles/main.dir/src/parent.cpp.s
 
 # Object files for target main
 main_OBJECTS = \

@@ -73,15 +73,15 @@ lab1/CMakeFiles/child.dir/src/child.cpp.o: lab1/CMakeFiles/child.dir/flags.make
 lab1/CMakeFiles/child.dir/src/child.cpp.o: /workspaces/OS-labs/lab1/src/child.cpp
 lab1/CMakeFiles/child.dir/src/child.cpp.o: lab1/CMakeFiles/child.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/OS-labs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object lab1/CMakeFiles/child.dir/src/child.cpp.o"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lab1/CMakeFiles/child.dir/src/child.cpp.o -MF CMakeFiles/child.dir/src/child.cpp.o.d -o CMakeFiles/child.dir/src/child.cpp.o -c /workspaces/OS-labs/lab1/src/child.cpp
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lab1/CMakeFiles/child.dir/src/child.cpp.o -MF CMakeFiles/child.dir/src/child.cpp.o.d -o CMakeFiles/child.dir/src/child.cpp.o -c /workspaces/OS-labs/lab1/src/child.cpp
 
 lab1/CMakeFiles/child.dir/src/child.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/child.dir/src/child.cpp.i"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/src/child.cpp > CMakeFiles/child.dir/src/child.cpp.i
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/OS-labs/lab1/src/child.cpp > CMakeFiles/child.dir/src/child.cpp.i
 
 lab1/CMakeFiles/child.dir/src/child.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/child.dir/src/child.cpp.s"
-	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/src/child.cpp -o CMakeFiles/child.dir/src/child.cpp.s
+	cd /workspaces/OS-labs/build/lab1 && /usr/local/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/OS-labs/lab1/src/child.cpp -o CMakeFiles/child.dir/src/child.cpp.s
 
 # Object files for target child
 child_OBJECTS = \

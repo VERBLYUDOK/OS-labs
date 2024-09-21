@@ -26,9 +26,7 @@ void run_parent_process(std::istream& stream) {
         stream >> fileName;
 
         // Отправляем имя файла дочернему процессу
-        //write(pipe1[1], &fileName, strlen(fileName) + 1);
         write(pipe1[1], &fileName, 50);
-        //sleep(1);
 
         // Отправляем числа дочернему процессу
         float num;
