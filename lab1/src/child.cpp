@@ -19,10 +19,12 @@ int main() {
     }
 
     // Запись суммы в файл
+    file << std::fixed << std::setprecision(6);
     file << "Сумма: " << sum << '\n';
     file.close();  // Закрываем файл
 
     // Передача результата родительскому процессу через pipe2 (STDOUT)
+    std::cout << std::fixed << std::setprecision(6);
     std::cout << "Сумма: " << sum << '\n';
 
     return 0;

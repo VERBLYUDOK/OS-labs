@@ -178,14 +178,25 @@ lab1/CMakeFiles/main.dir/src/parent.cpp.o: \
  /usr/local/include/c++/14.2.0/bits/basic_ios.tcc \
  /usr/local/include/c++/14.2.0/bits/ostream.tcc \
  /usr/local/include/c++/14.2.0/istream \
- /usr/local/include/c++/14.2.0/bits/istream.tcc /usr/include/fcntl.h \
+ /usr/local/include/c++/14.2.0/bits/istream.tcc \
+ /usr/local/include/c++/14.2.0/iomanip \
+ /usr/local/include/c++/14.2.0/locale \
+ /usr/local/include/c++/14.2.0/bits/locale_facets_nonio.h \
+ /usr/local/include/c++/14.2.0/ctime \
+ /usr/local/include/c++/14.2.0/x86_64-linux-gnu/bits/time_members.h \
+ /usr/local/include/c++/14.2.0/x86_64-linux-gnu/bits/messages_members.h \
+ /usr/include/libintl.h /usr/local/include/c++/14.2.0/bits/codecvt.h \
+ /usr/local/include/c++/14.2.0/bits/locale_facets_nonio.tcc \
+ /usr/local/include/c++/14.2.0/bits/locale_conv.h \
+ /usr/local/include/c++/14.2.0/bits/quoted_string.h \
+ /usr/local/include/c++/14.2.0/sstream \
+ /usr/local/include/c++/14.2.0/bits/sstream.tcc /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
  /usr/local/include/c++/14.2.0/fstream \
- /usr/local/include/c++/14.2.0/bits/codecvt.h \
  /usr/local/include/c++/14.2.0/x86_64-linux-gnu/bits/basic_file.h \
  /usr/local/include/c++/14.2.0/x86_64-linux-gnu/bits/c++io.h \
  /usr/local/include/c++/14.2.0/bits/fstream.tcc /usr/include/unistd.h \

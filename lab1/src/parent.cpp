@@ -1,6 +1,6 @@
 #include "lab1.h"
 
-void run_parent_process() {
+void run_parent_process(std::istream& stream) {
     int pipe1[2], pipe2[2];
 
     if (pipe(pipe1) == -1 || pipe(pipe2) == -1) {
@@ -23,17 +23,17 @@ void run_parent_process() {
         close(pipe2[1]);
         char fileName[50];
         std::cout << "Введите имя файла:\n";
-        std::cin >> fileName;
+        stream >> fileName;
 
         // Отправляем имя файла дочернему процессу
-        write(pipe1[1], &fileName, strlen(fileName) + 1);
-        //write(pipe1[1], &fileName, 50);
-        sleep(1);
+        //write(pipe1[1], &fileName, strlen(fileName) + 1);
+        write(pipe1[1], &fileName, 50);
+        //sleep(1);
 
         // Отправляем числа дочернему процессу
         float num;
         std::cout << "Введите числа (EOF для завершения):\n";
-        while (std::cin >> num) {
+        while (stream >> num) {
             write(pipe1[1], &num, sizeof(num));
         }
         close(pipe1[1]);

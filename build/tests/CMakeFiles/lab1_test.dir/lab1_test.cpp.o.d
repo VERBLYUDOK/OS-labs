@@ -342,7 +342,9 @@ tests/CMakeFiles/lab1_test.dir/lab1_test.cpp.o: \
  /workspaces/OS-labs/build/_deps/googletest-src/googletest/include/gtest/gtest-typed-test.h \
  /workspaces/OS-labs/build/_deps/googletest-src/googletest/include/gtest/gtest_pred_impl.h \
  /workspaces/OS-labs/build/_deps/googletest-src/googletest/include/gtest/gtest_prod.h \
- /workspaces/OS-labs/tests/../lab1/include/lab1.h /usr/include/fcntl.h \
+ /workspaces/OS-labs/tests/../lab1/include/lab1.h \
+ /usr/local/include/c++/14.2.0/iomanip \
+ /usr/local/include/c++/14.2.0/bits/quoted_string.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \

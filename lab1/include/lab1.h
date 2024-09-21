@@ -2,7 +2,7 @@
 #define LAB1_H
 
 #include <iostream>
-#include <cstdio>
+#include <iomanip> // setprecision
 #include <fcntl.h> // open()
 #include <fstream> // Для работы с файлами через std::ofstream
 #include <unistd.h> // Для системных вызовов POSIX (fork(), pipe(), dup2(), read(), write())
@@ -10,6 +10,6 @@
 #include <cstdlib> // exit()
 #include <cstring> // strlen()
 
-void run_parent_process();
+void run_parent_process(std::istream&);
 
 #endif
