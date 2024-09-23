@@ -1,1 +1,0 @@
-/usr/local/bin/g++  -Werror=maybe-uninitialized CMakeFiles/child.dir/src/child.cpp.o -o ../bin/child 
