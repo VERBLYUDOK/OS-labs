@@ -15,8 +15,7 @@ TEST(ParentProcessTest, CheckSumCalculation) {
 
         // Запуск родительского процесса
         RunParentProcess(testFile);  // Передаем поток для тестирования
-    }
-    {
+
         // Проверяем, что файл был создан программой
         std::ifstream resultFile(testFileName);
         ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
@@ -46,8 +45,7 @@ TEST(ParentProcessTest, EmptyInput) {
 
         // Запуск родительского процесса
         RunParentProcess(testFile);  // Передаем поток для тестирования
-    }
-    {
+
         // Проверяем, что файл был создан программой
         std::ifstream resultFile(testFileName);
         ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
@@ -77,8 +75,7 @@ TEST(ParentProcessTest, LargeNumbersInput) {
 
         // Запускаем родительский процесс
         RunParentProcess(testFile);  // Передаем поток для тестирования
-    }
-    {
+
         // Проверяем, что файл был создан программой
         std::ifstream resultFile(testFileName);
         ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
