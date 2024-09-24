@@ -1,17 +1,17 @@
 #include "lab1.h"
 
-void run_parent_process(std::istream& stream) {
+void RunParentProcess(std::istream& stream) {
     int pipe1[2], pipe2[2];
 
     if (pipe(pipe1) == -1 || pipe(pipe2) == -1) {
-        perror("Ошибка создания pipe");
+        std::cerr << "Ошибка создания pipe" << std::endl;
         exit(1);
     }
 
     pid_t pid = fork();
 
     if (pid < 0) {
-        perror("Ошибка fork");
+        std::cerr << "Ошибка fork" << std::endl;
         exit(1);
     }
 
@@ -21,23 +21,32 @@ void run_parent_process(std::istream& stream) {
         // Закрывваем неиспользуемое родительским процессом
         close(pipe1[0]);
         close(pipe2[1]);
+        
         char fileName[50];
         std::cout << "Введите имя файла:\n";
         stream >> fileName;
 
         // Отправляем имя файла дочернему процессу
-        write(pipe1[1], &fileName, 50);
+        if (write(pipe1[1], &fileName, 50) == -1) {
+            std::cerr << "Ошибка write" << std::endl;
+            close(pipe1[1]);
+            exit(1);
+        }
 
         // Отправляем числа дочернему процессу
         float num;
         std::cout << "Введите числа (EOF для завершения):\n";
         while (stream >> num) {
-            write(pipe1[1], &num, sizeof(num));
+            if (write(pipe1[1], &num, sizeof(num)) == -1) {
+                std::cerr << "Ошибка write" << std::endl;
+                close(pipe1[1]);
+                exit(1);
+            };
         }
         close(pipe1[1]);
 
         // Ждем завершения дочернего процесса
-        wait(NULL);
+        wait(nullptr);
 
         // Получаем результат из pipe2
         char buffer[100];
@@ -55,15 +64,21 @@ void run_parent_process(std::istream& stream) {
         close(pipe1[1]);
         close(pipe2[0]);
 
-        dup2(pipe1[0], 0); // Чтобы принять fileName через пайп
-        dup2(pipe2[1], 1); // Чтобы передать результат родителю через пайп
+        // dup2(pipe1[0], 0); // Чтобы принять fileName через пайп
+        // dup2(pipe2[1], 1); // Чтобы передать результат родителю через пайп
+        if (dup2(pipe1[0], 0) == -1 or dup2(pipe2[1], 1) == -1) {
+            std::cerr << "Ошибка dup2" << std::endl;
+            exit(1);
+        }
         close(pipe1[0]);  // Закрываем конец чтения pipe1, он больше не нужен, раз мы переопределили вход
         close(pipe2[1]);  // Закрываем конец записи pipe2
 
         // Дочерний процесс через exec
-        execlp("bin/child", "bin/child", NULL);
+        const char* pathToChild = std::getenv("PATH_TO_CHILD");
+        execlp(pathToChild, pathToChild, nullptr);
+        //execlp("bin/child", "bin/child", NULL);
 
-        perror("Ошибка exec");
+        std::cerr << "Ошибка exec" << std::endl;
         exit(1);
     }
 }

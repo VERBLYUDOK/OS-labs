@@ -4,26 +4,28 @@
 TEST(ParentProcessTest, CheckSumCalculation) {
     const char* testFileName = "output.txt";
     
-    // Ввод для родительского процесса
-    std::ofstream test_input("test_input.txt");
-    test_input << testFileName << "\n7.6 5.5";
-    test_input.close();
-    std::ifstream test_file("test_input.txt");
-    ASSERT_TRUE(test_file.is_open()) << "Не удалось открыть файл";
+    {
+        // Ввод для родительского процесса
+        std::ofstream testInput("test_input.txt");
+        testInput << testFileName << "\n7.6 5.5";
+    }
+    {
+        std::ifstream testFile("test_input.txt");
+        ASSERT_TRUE(testFile.is_open()) << "Не удалось открыть файл";
 
-    // Запуск родительского процесса
-    run_parent_process(test_file);  // Передаем поток для тестирования
-    test_file.close();
+        // Запуск родительского процесса
+        RunParentProcess(testFile);  // Передаем поток для тестирования
+    }
+    {
+        // Проверяем, что файл был создан программой
+        std::ifstream resultFile(testFileName);
+        ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
 
-    // Проверяем, что файл был создан программой
-    std::ifstream resultFile(testFileName);
-    ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
-
-    // Читаем результат
-    std::string line;
-    std::getline(resultFile, line);
-    resultFile.close();
-    EXPECT_EQ(line, "Сумма: 13.100000") << "Неверный результат суммы в файле";
+        // Читаем результат
+        std::string line;
+        std::getline(resultFile, line);
+        EXPECT_EQ(line, "Сумма: 13.100000") << "Неверный результат суммы в файле";
+    }
 
     // Смываем
     std::remove(testFileName);
@@ -33,26 +35,28 @@ TEST(ParentProcessTest, CheckSumCalculation) {
 TEST(ParentProcessTest, EmptyInput) {
     const char* testFileName = "empty_test_file.txt";
 
-    // Ввод для родительского процесса
-    std::ofstream test_input("empty_input.txt");
-    test_input << testFileName;
-    test_input.close();
-    std::ifstream test_file("empty_input.txt");
-    ASSERT_TRUE(test_file.is_open()) << "Не удалось открыть файл";
+    {
+        // Ввод для родительского процесса
+        std::ofstream testInput("empty_input.txt");
+        testInput << testFileName;
+    }
+    {
+        std::ifstream testFile("empty_input.txt");
+        ASSERT_TRUE(testFile.is_open()) << "Не удалось открыть файл";
 
-    // Запуск родительского процесса
-    run_parent_process(test_file);  // Передаем поток для тестирования
-    test_file.close();
+        // Запуск родительского процесса
+        RunParentProcess(testFile);  // Передаем поток для тестирования
+    }
+    {
+        // Проверяем, что файл был создан программой
+        std::ifstream resultFile(testFileName);
+        ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
 
-    // Проверяем, что файл был создан программой
-    std::ifstream resultFile(testFileName);
-    ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
-
-    // Читаем результат
-    std::string line;
-    std::getline(resultFile, line);
-    resultFile.close();
-    EXPECT_EQ(line, "Сумма: 0.000000") << "Неверный результат для пустого ввода";
+        // Читаем результат
+        std::string line;
+        std::getline(resultFile, line);
+        EXPECT_EQ(line, "Сумма: 0.000000") << "Неверный результат для пустого ввода";
+    }
 
     // Удаляем тестовые файлы
     std::remove(testFileName);
@@ -62,26 +66,28 @@ TEST(ParentProcessTest, EmptyInput) {
 TEST(ParentProcessTest, LargeNumbersInput) {
     const char* testFileName = "large_test_file.txt";
     
-    // Ввод для родительского процесса
-    std::ofstream test_input("large_input.txt");
-    test_input << testFileName << "\n6.1234 5.230011 1.2 3 .1";
-    test_input.close();
-    std::ifstream test_file("large_input.txt");
-    ASSERT_TRUE(test_file.is_open()) << "Не удалось открыть файл";
+    {
+        // Ввод для родительского процесса
+        std::ofstream testInput("large_input.txt");
+        testInput << testFileName << "\n6.1234 5.230011 1.2 3 .1";
+    }
+    {
+        std::ifstream testFile("large_input.txt");
+        ASSERT_TRUE(testFile.is_open()) << "Не удалось открыть файл";
 
-    // Запускаем родительский процесс
-    run_parent_process(test_file);  // Передаем поток для тестирования
-    test_file.close();
+        // Запускаем родительский процесс
+        RunParentProcess(testFile);  // Передаем поток для тестирования
+    }
+    {
+        // Проверяем, что файл был создан программой
+        std::ifstream resultFile(testFileName);
+        ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
 
-    // Проверяем, что файл был создан программой
-    std::ifstream resultFile(testFileName);
-    ASSERT_TRUE(resultFile.good()) << "Файл не был создан";
-
-    // Читаем результат
-    std::string line;
-    std::getline(resultFile, line);
-    resultFile.close();
-    EXPECT_EQ(line, "Сумма: 15.653411") << "Неверный результат для больших чисел";
+        // Читаем результат
+        std::string line;
+        std::getline(resultFile, line);
+        EXPECT_EQ(line, "Сумма: 15.653411") << "Неверный результат для больших чисел";
+    }
 
     // Удаляем тестовый файл
     std::remove(testFileName);

@@ -2,6 +2,6 @@
 
 int main() {
     std::cout << "Запуск родительского процесса...\n";
-    run_parent_process(std::cin);
+    RunParentProcess(std::cin);
     return 0;
 }
