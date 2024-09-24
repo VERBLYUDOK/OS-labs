@@ -64,8 +64,7 @@ void RunParentProcess(std::istream& stream) {
         close(pipe1[1]);
         close(pipe2[0]);
 
-        // dup2(pipe1[0], 0); // Чтобы принять fileName через пайп
-        // dup2(pipe2[1], 1); // Чтобы передать результат родителю через пайп
+        // Готовим почву для последующего принятия fileName через pipe и передачи результата родителю
         if (dup2(pipe1[0], 0) == -1 or dup2(pipe2[1], 1) == -1) {
             std::cerr << "Ошибка dup2" << std::endl;
             exit(1);
@@ -76,7 +75,6 @@ void RunParentProcess(std::istream& stream) {
         // Дочерний процесс через exec
         const char* pathToChild = std::getenv("PATH_TO_CHILD");
         execlp(pathToChild, pathToChild, nullptr);
-        //execlp("bin/child", "bin/child", NULL);
 
         std::cerr << "Ошибка exec" << std::endl;
         exit(1);
