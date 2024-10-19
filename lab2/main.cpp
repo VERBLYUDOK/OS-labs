@@ -1,6 +1,6 @@
 #include <iostream>
-#include "determinant_calculator.h"
-#include "matrix.h"
+#include "TDeterminantCalculator.h"
+#include "TMatrix.h"
 
 
 int main(int argc, char* argv[]) {
@@ -10,27 +10,26 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    int num_threads;
+    int numThreads;
     try {
-        num_threads = std::stoi(argv[2]);
+        numThreads = std::stoi(argv[2]);
     } catch (const std::exception& e) {
         std::cerr << "Ошибка: неверное значение числа потоков." << std::endl;
         return 1;
     }
 
-    if (num_threads <= 0) {
+    if (numThreads <= 0) {
         std::cerr << "Ошибка: число потоков должно быть положительным." << std::endl;
         return 1;
     }
 
     // Ввод матрицы пользователем
-    Matrix matrix = inputMatrix();
+    TMatrix Matrix = InputTMatrix();
 
-    // Создание объекта калькулятора и вычисление определителя
-    DeterminantCalculator calculator(matrix, num_threads);
-    double determinant = calculator.compute();
+    // Вычисляем определитель (разложение по первой строке)
+    TDeterminantCalculator Calculator(Matrix, numThreads);
+    double determinant = Calculator.Compute();
 
-    // Вывод результата
     std::cout << "Определитель: " << determinant << std::endl;
 
     return 0;
