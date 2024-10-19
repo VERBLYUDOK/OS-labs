@@ -1,5 +1,5 @@
 add_executable(lab1_test lab1_test.cpp ../lab1/include/lab1.h ../lab1/src/parent.cpp)
-add_executable(lab2_test lab2_test.cpp ../lab2/src/determinant_calculator.cpp ../lab2/include/determinant_calculator.h ../lab2/src/matrix.cpp ../lab2/include/matrix.h)
+add_executable(lab2_test lab2_test.cpp ../lab2/src/TDeterminantCalculator.cpp ../lab2/include/TDeterminantCalculator.h ../lab2/src/TMatrix.cpp ../lab2/include/TMatrix.h)
 
 # Установка Google Test
 include(FetchContent)

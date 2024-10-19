@@ -1,24 +1,24 @@
 #include <iostream>
-#include "matrix.h"
+#include "TMatrix.h"
 
-Matrix inputMatrix() {
+TMatrix InputTMatrix() {
     int n;
     std::cout << "Введите размер матрицы (n x n): ";
     std::cin >> n;
 
     if (n <= 0) {
         std::cerr << "Размер матрицы должен быть положительным." << std::endl;
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
-    Matrix matrix(n, std::vector<double>(n));
+    TMatrix Matrix(n, std::vector<double>(n));
     std::cout << "Введите элементы матрицы построчно:\n";
     for (int i = 0; i < n; ++i) {
         std::cout << "Строка " << i + 1 << ": ";
         for (int j = 0; j < n; ++j) {
-            std::cin >> matrix[i][j];
+            std::cin >> Matrix[i][j];
         }
     }
 
-    return matrix;
+    return Matrix;
 }
