@@ -3,7 +3,7 @@
 
 #include <vector>
 
-typedef std::vector<std::vector<double>> TMatrix;
+using TMatrix = std::vector<std::vector<double>>;
 
 TMatrix InputTMatrix();
 

@@ -56,25 +56,18 @@ TEST(DeterminantCalculatorTest, SingleVsMultiThreadConsistency) {
     TDeterminantCalculator CalcSingle(Mat, 1);
     double detSingle = CalcSingle.Compute();
 
-    // Многопоточный вариант (например, 4 потока)
-    TDeterminantCalculator CalcMulti(Mat, 4);
-    double detMulti = CalcMulti.Compute();
-
-    EXPECT_DOUBLE_EQ(detSingle, detMulti);
+    // Многопоточный вариант
+    for (int i = 2; i <= 8; i += 2) {
+        TDeterminantCalculator CalcMulti(Mat, i);
+        double detMulti = CalcMulti.Compute();
+        EXPECT_DOUBLE_EQ(detSingle, detMulti);
+    }
 }
 
 // Проверка производительности многопоточного варианта
 TEST(DeterminantCalculatorTest, MultiThreadPerformance) {
-    // 7x7 матрица
-    TMatrix Mat = {
-        {1, 0, 2, -1, 3, 2, 0},
-        {3, 0, 0, 5, 1, 1, 1},
-        {2, 1, 4, -3, 2, -1, 3},
-        {1, 0, 5, 0, 0, 1, 0},
-        {4, 1, -2, 2, 1, 3, -2},
-        {0, 1, 0, 0, 1, 3, -2},
-        {1, 1, -2, 5, 1, 0, 1}
-    };
+    // 50x50 матрица
+    TMatrix Mat(50, std::vector<double>(50, 2.0));
 
     // Измеряем время для однопоточного варианта
     TDeterminantCalculator CalcSingle(Mat, 1);

@@ -23,14 +23,14 @@ TDeterminantCalculator::~TDeterminantCalculator() {
     pthread_cond_destroy(&activeTasksCond_);
 }
 
-void TDeterminantCalculator::PushTask(TTask* Task) {
+void TDeterminantCalculator::PushTask(std::unique_ptr<TTask> Task) {
     pthread_mutex_lock(&queueMutex_);
-    taskQueue_.push(Task);
+    taskQueue_.push(std::move(Task));
     pthread_cond_signal(&queueCond_);
     pthread_mutex_unlock(&queueMutex_);
 }
 
-bool TDeterminantCalculator::PopTask(TTask*& Task) {
+bool TDeterminantCalculator::PopTask(std::unique_ptr<TTask>& Task) {
     pthread_mutex_lock(&queueMutex_);
     while (taskQueue_.empty() && !stop_) {
         pthread_cond_wait(&queueCond_, &queueMutex_);
@@ -39,7 +39,7 @@ bool TDeterminantCalculator::PopTask(TTask*& Task) {
         pthread_mutex_unlock(&queueMutex_);
         return false;
     }
-    Task = taskQueue_.front();
+    Task = std::move(taskQueue_.front());
     taskQueue_.pop();
     pthread_mutex_unlock(&queueMutex_);
     return true;
@@ -79,7 +79,7 @@ void* TDeterminantCalculator::WorkerHelper(void* arg) {
 // Основная функция потока
 void* TDeterminantCalculator::Worker() {
     while (true) {
-        TTask* Task;
+        std::unique_ptr<TTask> Task;
         if (!PopTask(Task)) {
             break; // Очередь остановлена и задач больше нет
         }
@@ -87,8 +87,27 @@ void* TDeterminantCalculator::Worker() {
         int n = Task->Matrix.size();
 
         if (n == 1) {
-            // Базовый случай
+            // Базовый случай 1x1 матрица
             double det = Task->element * Task->Matrix[0][0];
+            pthread_mutex_lock(&determinantMutex_);
+            globalDeterminant_ += det;
+            pthread_mutex_unlock(&determinantMutex_);
+        }
+        else if (n == 3) {
+            // Базовый случайM 3x3 матрица
+            double a = Task->Matrix[0][0];
+            double b = Task->Matrix[0][1];
+            double c = Task->Matrix[0][2];
+            double d = Task->Matrix[1][0];
+            double e = Task->Matrix[1][1];
+            double f = Task->Matrix[1][2];
+            double g = Task->Matrix[2][0];
+            double h = Task->Matrix[2][1];
+            double i = Task->Matrix[2][2];
+            
+            // По методу звездочки
+            double det = Task->element * (a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g));
+            
             pthread_mutex_lock(&determinantMutex_);
             globalDeterminant_ += det;
             pthread_mutex_unlock(&determinantMutex_);
@@ -105,11 +124,11 @@ void* TDeterminantCalculator::Worker() {
                 int sign = ((j % 2) == 0) ? 1 : -1;
 
                 // Вычисляем новое накопленное значение элемента
-                double new_element = Task->element * element * sign;
+                double newElement = Task->element * element * sign;
 
                 // Создаем новую задачу и добавляем ее в очередь
-                TTask* newTask = new TTask(Minor, new_element);
-                PushTask(newTask);
+                std::unique_ptr<TTask> newTask = std::make_unique<TTask>(Minor, newElement);
+                PushTask(std::move(newTask));
             }
         }
 
@@ -121,8 +140,6 @@ void* TDeterminantCalculator::Worker() {
             pthread_cond_signal(&activeTasksCond_);
         }
         pthread_mutex_unlock(&activeTasksMutex_);
-
-        delete Task;
     }
     return nullptr;
 }
@@ -146,8 +163,8 @@ double TDeterminantCalculator::Compute() {
     activeTasks_ = 1; // Корневая задача
     pthread_mutex_unlock(&activeTasksMutex_);
 
-    TTask* InitialTask = new TTask(Matrix_, 1.0);
-    PushTask(InitialTask);
+    std::unique_ptr<TTask> InitialTask = std::make_unique<TTask>(Matrix_, 1.0);
+    PushTask(std::move(InitialTask));
 
     // Ожидаем завершения всех задач
     pthread_mutex_lock(&activeTasksMutex_);

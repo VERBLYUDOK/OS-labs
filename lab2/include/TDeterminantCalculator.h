@@ -4,6 +4,7 @@
 #include "TMatrix.h"
 #include <queue>
 #include <pthread.h>
+#include <memory>
 
 
 class TDeterminantCalculator {
@@ -31,8 +32,8 @@ private:
     void* Worker();
     
     // Методы для QueueTask
-    void PushTask(TTask* Task);
-    bool PopTask(TTask*& Task);
+    void PushTask(std::unique_ptr<TTask> Task);
+    bool PopTask(std::unique_ptr<TTask>& Task);
     void Shutdown();
 
     TMatrix GetMinor(const TMatrix& Matrix, int row, int col);
@@ -43,7 +44,7 @@ private:
     int activeTasks_;
     bool stop_;
     
-    std::queue<TTask*> taskQueue_;
+    std::queue<std::unique_ptr<TTask>> taskQueue_;
     
     // Синхронизация
     pthread_mutex_t queueMutex_;
