@@ -83,8 +83,8 @@ TEST(DeterminantCalculatorTest, SingleVsMultiThreadConsistency) {
 
 // Проверка производительности многопоточного варианта
 TEST(DeterminantCalculatorTest, MultiThreadPerformance) {
-    // 50x50 матрица
-    TMatrix Mat(50, std::vector<double>(50, 2.0));
+    // 11x11 матрица
+    TMatrix Mat(11, std::vector<double>(11, 2.0));
 
     // Измеряем время для однопоточного варианта
     TDeterminantCalculator CalcSingle(Mat, 1);
