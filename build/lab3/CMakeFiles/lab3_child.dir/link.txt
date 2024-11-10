@@ -1,0 +1,1 @@
+/usr/local/bin/c++  -Werror=maybe-uninitialized CMakeFiles/lab3_child.dir/src/child.cpp.o -o ../bin/lab3_child 

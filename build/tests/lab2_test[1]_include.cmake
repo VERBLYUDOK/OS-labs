@@ -1,0 +1,5 @@
+if(EXISTS "/workspaces/OS-labs/build/tests/lab2_test[1]_tests.cmake")
+  include("/workspaces/OS-labs/build/tests/lab2_test[1]_tests.cmake")
+else()
+  add_test(lab2_test_NOT_BUILT lab2_test_NOT_BUILT)
+endif()
