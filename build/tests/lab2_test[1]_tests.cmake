@@ -1,7 +1,0 @@
-add_test([=[DeterminantCalculatorTest.SingleThreadCorrectness]=]  /workspaces/OS-labs/build/bin/lab2_test [==[--gtest_filter=DeterminantCalculatorTest.SingleThreadCorrectness]==] --gtest_also_run_disabled_tests)
-set_tests_properties([=[DeterminantCalculatorTest.SingleThreadCorrectness]=]  PROPERTIES WORKING_DIRECTORY /workspaces/OS-labs/build/tests SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-add_test([=[DeterminantCalculatorTest.SingleVsMultiThreadConsistency]=]  /workspaces/OS-labs/build/bin/lab2_test [==[--gtest_filter=DeterminantCalculatorTest.SingleVsMultiThreadConsistency]==] --gtest_also_run_disabled_tests)
-set_tests_properties([=[DeterminantCalculatorTest.SingleVsMultiThreadConsistency]=]  PROPERTIES WORKING_DIRECTORY /workspaces/OS-labs/build/tests SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-add_test([=[DeterminantCalculatorTest.MultiThreadPerformance]=]  /workspaces/OS-labs/build/bin/lab2_test [==[--gtest_filter=DeterminantCalculatorTest.MultiThreadPerformance]==] --gtest_also_run_disabled_tests)
-set_tests_properties([=[DeterminantCalculatorTest.MultiThreadPerformance]=]  PROPERTIES WORKING_DIRECTORY /workspaces/OS-labs/build/tests SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-set(  lab2_test_TESTS DeterminantCalculatorTest.SingleThreadCorrectness DeterminantCalculatorTest.SingleVsMultiThreadConsistency DeterminantCalculatorTest.MultiThreadPerformance)
