@@ -3,14 +3,18 @@
 
 
 void RunParentProcess(std::istream& stream) {
-    int fd = open(SHARED_FILE, O_CREAT | O_RDWR, 0666);
+    int fd = shm_open(SHARED_FILE, O_CREAT | O_RDWR, 0666);
     if (fd == -1) {
         std::cerr << "Ошибка открытия общего файла" << std::endl;
         exit(1);
     }
 
     // Устанавливаем размер файла
-    ftruncate(fd, sizeof(SharedData));
+    if (ftruncate(fd, sizeof(SharedData)) == -1) {
+        std::cerr << "Ошибка ftruncate" << std::endl;
+        shm_unlink(SHARED_FILE);
+        exit(1);
+    }
 
     // Отображаем файл в память
     SharedData* shared = (SharedData*)mmap(nullptr, sizeof(SharedData),
@@ -18,6 +22,7 @@ void RunParentProcess(std::istream& stream) {
     if (shared == MAP_FAILED) {
         std::cerr << "Ошибка mmap" << std::endl;
         close(fd);
+        shm_unlink(SHARED_FILE);
         exit(1);
     }
     close(fd);
@@ -39,27 +44,25 @@ void RunParentProcess(std::istream& stream) {
         std::cout << "Введите имя файла:\n";
         stream.getline(shared->fileName, sizeof(shared->fileName));
 
+        sem_post(&shared->sem_child);
+
         std::cout << "Введите числа (EOF для завершения):\n";
         float num;
-        int index = 0;
         while (stream >> num) {
-            if (index < 100) {
-                shared->numbers[index++] = num;
-            } else {
-                std::cerr << "Превышено максимальное количество чисел" << std::endl;
-                break;
-            }
+            shared->finished = false;
+            shared->number = num;
+            
+            sem_post(&shared->sem_child);
+
+            sem_wait(&shared->sem_parent);
         }
-        shared->count = index;
+        shared->finished = true;
+        sem_post(&shared->sem_child);
 
         // Очищаем поток ввода
         stream.clear();
         stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        // Сигнализируем дочернему процессу о готовности данных
-        sem_post(&shared->sem_child);
-
-        // Ждем от дочернего процесса результата
         sem_wait(&shared->sem_parent);
 
         // Читаем результат
@@ -73,7 +76,7 @@ void RunParentProcess(std::istream& stream) {
         munmap(shared, sizeof(SharedData));
 
         // Удаляем файл
-        unlink(SHARED_FILE);
+        shm_unlink(SHARED_FILE);
 
         // Ждем завершения дочернего процесса
         wait(nullptr);

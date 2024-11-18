@@ -13,16 +13,17 @@
 #include <semaphore.h> // sem_t, sem_init(), sem_wait(), sem_post()
 #include <cstdlib>    // exit()
 
-#define SHARED_FILE "/tmp/shared_memory_file"
-#define SHARED_SIZE 4096
+
+constexpr auto SHARED_FILE = "/shared_memory_file";
+constexpr size_t SHARED_SIZE = 4096;
 
 struct SharedData {
     sem_t sem_parent; // Семафор для родителя
     sem_t sem_child;  // Семафор для ребенка
     char fileName[256];
-    float numbers[100];
-    int count;
+    float number;
     float sum;
+    bool finished;
 };
 
 void RunParentProcess(std::istream&);

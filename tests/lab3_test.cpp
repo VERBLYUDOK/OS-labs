@@ -6,6 +6,7 @@ protected:
     std::string testName;
     std::string outputFileName;
     std::string inputFileName;
+    
     void SetUp() override {
         testName = ::testing::UnitTest::GetInstance()->current_test_info()->name();
 

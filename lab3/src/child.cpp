@@ -1,7 +1,7 @@
 #include "lab3.h"
 
 int main() {
-    int fd = open(SHARED_FILE, O_RDWR, 0666);
+    int fd = shm_open(SHARED_FILE, O_RDWR, 0666);
     if (fd == -1) {
         std::cerr << "Ошибка открытия общего файла в дочернем процессе" << std::endl;
         exit(1);
@@ -13,6 +13,7 @@ int main() {
     if (shared == MAP_FAILED) {
         std::cerr << "Ошибка mmap в дочернем процессе" << std::endl;
         close(fd);
+        shm_unlink(SHARED_FILE);
         exit(1);
     }
     close(fd);
@@ -25,8 +26,18 @@ int main() {
     strcpy(fileName, shared->fileName);
 
     float sum = 0;
-    for (int i = 0; i < shared->count; ++i) {
-        sum += shared->numbers[i];
+    while (true) {
+        // Ждем число
+        sem_wait(&shared->sem_child);
+
+        if (shared->finished) {
+            break;
+        }
+
+        sum += shared->number;
+
+        // Можно продолжать
+        sem_post(&shared->sem_parent);
     }
 
     // Записываем сумму в файл
