@@ -1,1 +1,0 @@
-/usr/local/bin/c++  -Werror=maybe-uninitialized CMakeFiles/lab2.dir/main.cpp.o CMakeFiles/lab2.dir/src/TDeterminantCalculator.cpp.o CMakeFiles/lab2.dir/src/TMatrix.cpp.o -o ../bin/lab2 
