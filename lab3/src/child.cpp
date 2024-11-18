@@ -8,7 +8,7 @@ int main() {
     }
 
     // Отображаем файл в память
-    SharedData* shared = (SharedData*)mmap(nullptr, SHARED_SIZE,
+    SharedData* shared = (SharedData*)mmap(nullptr, sizeof(SharedData),
                                            PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (shared == MAP_FAILED) {
         std::cerr << "Ошибка mmap в дочернем процессе" << std::endl;
