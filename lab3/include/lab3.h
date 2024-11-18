@@ -15,7 +15,6 @@
 
 
 constexpr auto SHARED_FILE = "/shared_memory_file";
-constexpr size_t SHARED_SIZE = 4096;
 
 struct SharedData {
     sem_t sem_parent; // Семафор для родителя
