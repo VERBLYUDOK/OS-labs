@@ -8,7 +8,19 @@ using SortFunc = int*(*)(int*, int);
 int main() {
     std::cout << "Программа №2 (динамическая загрузка библиотек)\n";
 
-    const char* lib_paths[] = {"./liblib1.so", "./liblib2.so"};
+    const char* pathToLib1 = std::getenv("PATH_TO_LIB1");
+    if (!pathToLib1) {
+        std::cerr << "Переменная окружения PATH_TO_LIB1 не установлена" << std::endl;
+        return 1;
+    }
+
+    const char* pathToLib2 = std::getenv("PATH_TO_LIB2");
+    if (!pathToLib2) {
+        std::cerr << "Переменная окружения PATH_TO_LIB2 не установлена" << std::endl;
+        return 1;
+    }
+
+    const char* lib_paths[] = {pathToLib1, pathToLib2};
     int current_lib = 0;
     void* handle = dlopen(lib_paths[current_lib], RTLD_LAZY);
 

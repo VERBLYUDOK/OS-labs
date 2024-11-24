@@ -3,7 +3,7 @@
 
 extern "C" {
     float Derivative(float A, float deltaX) {
-        return (cos(A + deltaX) - cos(A - deltaX)) / (2 * deltaX);
+        return (cosf(A + deltaX) - cosf(A - deltaX)) / (2 * deltaX);
     }
 
     int Partition(int* array, int low, int high) {

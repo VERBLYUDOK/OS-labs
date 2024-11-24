@@ -3,7 +3,7 @@
 
 extern "C" {
     float Derivative(float A, float deltaX) {
-        return (cos(A + deltaX) - cos(A)) / deltaX;
+        return (cosf(A + deltaX) - cosf(A)) / deltaX;
     }
 
     int* Sort(int* array, int size) {
