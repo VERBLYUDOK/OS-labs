@@ -1,6 +1,7 @@
 #include <iostream>
 #include <dlfcn.h>
 #include <cstring>
+#include <vector>
 
 using DerivativeFunc = float(*)(float, float);
 using SortFunc = int*(*)(int*, int);
@@ -74,17 +75,16 @@ int main() {
         } else if (command == 2) {
             int N;
             std::cin >> N;
-            int* array = new int[N];
+            std::vector<int> vect(N);
             for (int i = 0; i < N; ++i) {
-                std::cin >> array[i];
+                std::cin >> vect[i];
             }
-            Sort(array, N);
+            Sort(vect.data(), N);
             std::cout << "Отсортированный массив: ";
             for (int i = 0; i < N; ++i) {
-                std::cout << array[i] << " ";
+                std::cout << vect[i] << " ";
             }
             std::cout << "\n";
-            delete[] array;
         } else if (command == 3) {
             break;
         } else {
