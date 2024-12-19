@@ -1,0 +1,23 @@
+#ifndef TWORKER_H
+#define TWORKER_H
+
+#include <string>
+#include "tmessaging.h"
+
+class TWorkerNode {
+private:
+    int id_;
+    int parent_id_;
+    std::string endpoint_;
+    TMessaging messaging_;
+
+    void HandleExec(const std::string& text, const std::string& pattern);
+    void SendHeartbeat();
+
+public:
+    TWorkerNode(int id, int parent_id, const std::string& endpoint);
+    bool Init();
+    void Run();
+};
+
+#endif
