@@ -12,6 +12,8 @@ private:
     void HandleCreate(int id, int parent);
     void HandleExec(int id);
     void HandleHeartbit(int time_ms);
+    static void* ReceiverThreadStatic(void* arg);
+    void ReceiverThreadFunc();
     void Quit();
 
     bool IsNodeAvailable(int id);

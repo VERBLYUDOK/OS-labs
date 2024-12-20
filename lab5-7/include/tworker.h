@@ -13,6 +13,7 @@ private:
 
     void HandleExec(const std::string& text, const std::string& pattern);
     void SendHeartbeat();
+    static void* HeartbeatThreadStatic(void* arg);
 
 public:
     TWorkerNode(int id, int parent_id, const std::string& endpoint);

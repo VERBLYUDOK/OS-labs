@@ -18,7 +18,7 @@ public:
     bool SendToWorker(int node_id, const std::string& message);
     bool SendToController(const std::string& message);
 
-    bool RecvFromAnyWorker(int& node_id, std::string& message);
+    bool RecvFromAnyWorker(std::string& node_id_str, std::string& message);
     bool RecvFromController(std::string& message);
 
     bool IsController() const { return is_controller_; }

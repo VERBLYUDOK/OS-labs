@@ -2,7 +2,7 @@
 #include "tsearch.h"
 #include <iostream>
 #include <chrono>
-#include <thread>
+#include <pthread.h>
 
 TWorkerNode::TWorkerNode(int id, int parent_id, const std::string& endpoint)
 : id_(id), parent_id_(parent_id), endpoint_(endpoint) {}
@@ -15,19 +15,24 @@ bool TWorkerNode::Init() {
     return true;
 }
 
+void* TWorkerNode::HeartbeatThreadStatic(void* arg) {
+    TWorkerNode* self = static_cast<TWorkerNode*>(arg);
+    while (true) {
+        self->SendHeartbeat();
+        usleep(2000 * 1000); // 2000 ms = 2 s
+    }
+    return NULL;
+}
+
 void TWorkerNode::Run() {
-    std::thread hb_thread([this]() {
-        while (true) {
-            SendHeartbeat();
-            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        }
-    });
-    hb_thread.detach();
+    pthread_t hb_thread;
+    pthread_create(&hb_thread, NULL, &HeartbeatThreadStatic, this);
+    pthread_detach(hb_thread);
 
     while (true) {
         std::string msg;
         if (!messaging_.RecvFromController(msg)) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            usleep(100 * 1000); // 100 ms задержка
             continue;
         }
         if (msg.rfind("EXEC", 0) == 0) {

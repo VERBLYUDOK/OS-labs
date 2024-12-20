@@ -57,7 +57,7 @@ bool TMessaging::SendToController(const std::string& message) {
     return true;
 }
 
-bool TMessaging::RecvFromAnyWorker(int& node_id, std::string& message) {
+bool TMessaging::RecvFromAnyWorker(std::string& node_id_str, std::string& message) {
     if (!is_controller_) return false;
     zmq::message_t id_msg;
     zmq::message_t empty_msg;
@@ -71,7 +71,7 @@ bool TMessaging::RecvFromAnyWorker(int& node_id, std::string& message) {
         return false;
     }
 
-    node_id = std::stoi(std::string((char*)id_msg.data(), id_msg.size()));
+    node_id_str = std::string((char*)id_msg.data(), id_msg.size());
     message = std::string((char*)msg.data(), msg.size());
     return true;
 }
