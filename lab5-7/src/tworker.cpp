@@ -1,8 +1,11 @@
 #include "tworker.h"
 #include "tsearch.h"
+#include "common.h"
 #include <iostream>
 #include <chrono>
 #include <pthread.h>
+
+pthread_mutex_t g_print_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 TWorkerNode::TWorkerNode(int id, int parent_id, const std::string& endpoint)
 : id_(id), parent_id_(parent_id), endpoint_(endpoint) {}
@@ -17,7 +20,7 @@ bool TWorkerNode::Init() {
 
 void* TWorkerNode::HeartbeatThreadStatic(void* arg) {
     TWorkerNode* self = static_cast<TWorkerNode*>(arg);
-    while (true) {
+    while (self->running_) {
         self->SendHeartbeat();
         usleep(2000 * 1000); // 2000 ms = 2 s
     }
@@ -25,16 +28,34 @@ void* TWorkerNode::HeartbeatThreadStatic(void* arg) {
 }
 
 void TWorkerNode::Run() {
+    bool hb_started = false;
     pthread_t hb_thread;
-    pthread_create(&hb_thread, NULL, &HeartbeatThreadStatic, this);
-    pthread_detach(hb_thread);
 
-    while (true) {
+    while (running_) {
         std::string msg;
         if (!messaging_.RecvFromController(msg)) {
             usleep(100 * 1000); // 100 ms задержка
             continue;
         }
+
+        if (msg == "HB_START") {
+            if (!hb_started) {
+                hb_started = true;
+                pthread_create(&hb_thread, NULL, &HeartbeatThreadStatic, this);
+                pthread_detach(hb_thread);
+            }
+            continue;
+        }
+
+        if (msg == "QUIT") {
+            // Завершаем работу узла
+            running_ = false;
+            pthread_mutex_lock(&g_print_mutex);
+            std::cerr << "Worker " << id_ << " quitting...\n";
+            pthread_mutex_unlock(&g_print_mutex);
+            break;
+        }
+
         if (msg.rfind("EXEC", 0) == 0) {
             size_t pos1 = msg.find('\n');
             size_t pos2 = msg.find('\n', pos1+1);
@@ -67,6 +88,5 @@ void TWorkerNode::HandleExec(const std::string& text, const std::string& pattern
 }
 
 void TWorkerNode::SendHeartbeat() {
-    std::string hb = "HB " + std::to_string(id_);
-    messaging_.SendToController(hb);
+    messaging_.SendToController("HB");
 }

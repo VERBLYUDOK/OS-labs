@@ -11,7 +11,7 @@ class TControllerNode {
 private:
     void HandleCreate(int id, int parent);
     void HandleExec(int id);
-    void HandleHeartbit(int time_ms);
+    void HandleHeartbeat(int time_ms);
     static void* ReceiverThreadStatic(void* arg);
     void ReceiverThreadFunc();
     void Quit();
@@ -24,6 +24,7 @@ private:
     int heartbeat_time_ = 0;
     std::chrono::steady_clock::time_point last_heartbeat_check_ = std::chrono::steady_clock::now();
     std::atomic<bool> running_{true};
+    pthread_t recv_thread_;
 
 public:
     TControllerNode();

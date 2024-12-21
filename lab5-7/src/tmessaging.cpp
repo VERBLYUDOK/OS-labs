@@ -31,12 +31,12 @@ bool TMessaging::InitWorker(const std::string& controller_endpoint, int node_id)
 bool TMessaging::SendToWorker(int node_id, const std::string& message) {
     if (!is_controller_) return false;
     zmq::message_t id_msg(std::to_string(node_id).data(), std::to_string(node_id).size());
-    zmq::message_t empty_msg;
+    // zmq::message_t empty_msg;
     zmq::message_t msg(message.data(), message.size());
 
     try {
         socket_.send(id_msg, ZMQ_SNDMORE);
-        socket_.send(empty_msg, ZMQ_SNDMORE);
+        // socket_.send(empty_msg, ZMQ_SNDMORE);
         socket_.send(msg);
     } catch (const zmq::error_t& e) {
         std::cerr << "Messaging: SendToWorker error: " << e.what() << "\n";
@@ -60,11 +60,11 @@ bool TMessaging::SendToController(const std::string& message) {
 bool TMessaging::RecvFromAnyWorker(std::string& node_id_str, std::string& message) {
     if (!is_controller_) return false;
     zmq::message_t id_msg;
-    zmq::message_t empty_msg;
+    // zmq::message_t empty_msg;
     zmq::message_t msg;
     try {
         if (!socket_.recv(&id_msg)) return false;
-        if (!socket_.recv(&empty_msg)) return false;
+        // if (!socket_.recv(&empty_msg)) return false;
         if (!socket_.recv(&msg)) return false;
     } catch (const zmq::error_t& e) {
         std::cerr << "Messaging: RecvFromAnyWorker error: " << e.what() << "\n";

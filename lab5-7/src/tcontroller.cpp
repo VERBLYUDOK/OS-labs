@@ -19,13 +19,12 @@ void TControllerNode::Run() {
     std::cout << "Available commands:\n";
     std::cout << "  create <id> [parent]\n";
     std::cout << "  exec <id>\n";
-    std::cout << "  heartbit <time_ms>\n";
+    std::cout << "  heartbeat <time_ms>\n";
     std::cout << "  quit\n";
 
     // Поток приёма сообщений
-    pthread_t recv_thread;
-    pthread_create(&recv_thread, NULL, &TControllerNode::ReceiverThreadStatic, this);
-    pthread_detach(recv_thread);
+    pthread_create(&recv_thread_, NULL, &TControllerNode::ReceiverThreadStatic, this);
+    pthread_detach(recv_thread_);
 
     while (running_) {
         std::cout << "> ";
@@ -41,21 +40,28 @@ void TControllerNode::Run() {
             id_str = ""; 
             parent_str = "-1";
             iss >> id_str; // id
-            if (!id_str.empty()) iss >> parent_str; // parent если есть
+            if (iss.good()) iss >> parent_str;
 
-            int id = -1, parent = -1;
+            int id, parent;
             try {
+                if (id_str.empty()) {
+                    std::cout << "Error: invalid arguments for create\n";
+                    continue;
+                }
                 id = std::stoi(id_str);
                 parent = std::stoi(parent_str);
             } catch (...) {
                 std::cout << "Error: invalid arguments for create\n";
                 continue;
             }
-
             HandleCreate(id, parent);
         } else if (cmd == "exec") {
             std::string id_str;
             iss >> id_str;
+            if (id_str.empty()) {
+                std::cout << "Error: invalid id for exec\n";
+                continue;
+            }
             int id;
             try {
                 id = std::stoi(id_str);
@@ -64,17 +70,21 @@ void TControllerNode::Run() {
                 continue;
             }
             HandleExec(id);
-        } else if (cmd == "heartbit") {
+        } else if (cmd == "heartbeat") {
             std::string t_str;
             iss >> t_str;
+            if (t_str.empty()) {
+                std::cout << "Error: invalid time for heartbeat\n";
+                continue;
+            }
             int t;
             try {
                 t = std::stoi(t_str);
             } catch (...) {
-                std::cout << "Error: invalid time for heartbit\n";
+                std::cout << "Error: invalid time for heartbeat\n";
                 continue;
             }
-            HandleHeartbit(t);
+            HandleHeartbeat(t);
         } else if (cmd == "quit") {
             Quit();
         } else {
@@ -83,6 +93,8 @@ void TControllerNode::Run() {
 
         CheckHeartbeats();
     }
+    // Дадим время всем завершиться
+    usleep(500*1000); // 0.5 секунды
 }
 
 void* TControllerNode::ReceiverThreadStatic(void* arg) {
@@ -106,21 +118,30 @@ void TControllerNode::ReceiverThreadFunc() {
             nid = std::stoi(node_id_str);
         } catch (...) {
             std::cerr << "Controller: Invalid node_id_str received: " << node_id_str << "\n";
-            // Игнорируем это сообщение или выводим ошибку
+            std::cerr << msg << "\n"; // Выведем полученное сообщение
             continue;
         }
 
-        if (msg.rfind("HB", 0) == 0) {
+        if (msg == "HB") {
+            // Heartbeat signal
             TNodeInfo* node = topology_.GetNode(nid);
             if (node) {
                 node->last_heartbeat = std::chrono::steady_clock::now();
+                node->hb_received = true;
+                if (!node->alive) {
+                    // Узел снова послал HB, можно считать его живым
+                    node->alive = true; 
+                }
             } else {
+                // Неизвестный узел
                 std::cerr << "Controller: Received HB from unknown node " << nid << "\n";
             }
-        } else {
-            // Если это не HB, просто выводим сообщение
-            // Если это окажется что то непонятное, просто отобразим
+        } else if (msg == "Ok" || msg.rfind("Ok:",0)==0 || msg.rfind("Error:",0)==0) {
+            // Ответ на команду exec или другую команду
             std::cout << msg << "\n";
+        } else {
+            // Неизвестное сообщение
+            std::cout << "Unknown message from node " << nid << ": " << msg << "\n";
         }
     }
 }
@@ -186,18 +207,23 @@ void TControllerNode::HandleExec(int id) {
     }
 }
 
-void TControllerNode::HandleHeartbit(int time_ms) {
+void TControllerNode::HandleHeartbeat(int time_ms) {
     heartbeat_time_ = time_ms;
     std::cout << "Ok\n";
+
+    // Посылаем всем узлам "HB_START"
+    for (auto& [nid, info] : topology_.GetAllNodes()) {
+        messaging_.SendToWorker(nid, "HB_START");
+    }
 }
 
 void TControllerNode::Quit() {
     running_ = false;
     std::cout << "Exiting...\n";
-    // Опционально убить все воркеры
-    // for (auto& [id, info] : topology_.getAllNodes()) {
-    //     // можно послать сообщение на завершение узла, если нужна чистота
-    // }
+    // Посылаем QUIT всем узлам, чтобы они завершились
+    for (auto& [nid, info] : topology_.GetAllNodes()) {
+        messaging_.SendToWorker(nid, "QUIT");
+    }
 }
 
 bool TControllerNode::IsNodeAvailable(int id) {
@@ -218,10 +244,11 @@ void TControllerNode::CheckHeartbeats() {
     if (heartbeat_time_ <= 0) return;
     auto now = std::chrono::steady_clock::now();
     for (auto& [nid, info] : topology_.GetAllNodes()) {
+        if (!info.hb_received) continue; // Для недавно активированных
         auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(now - info.last_heartbeat).count();
         if (diff > 4 * heartbeat_time_ && info.alive) {
             info.alive = false;
-            std::cout << "Heartbit: node " << nid << " is unavailable now\n";
+            std::cout << "Heartbeat: node " << nid << " is unavailable now\n";
         }
     }
 }
