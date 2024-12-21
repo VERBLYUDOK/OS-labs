@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     strace \
     htop \
     gdb \
+    libzmq3-dev \
     # Удаляем кэшированные данные, облегчая докер
     # remove recirsive (все содержимое) force (принудительно)
     && rm -rf /var/lib/apt/lists/*

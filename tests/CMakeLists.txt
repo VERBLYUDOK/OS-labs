@@ -3,6 +3,7 @@ add_executable(lab2_test lab2_test.cpp ../lab2/src/TDeterminantCalculator.cpp ..
 add_executable(lab3_test lab3_test.cpp ../lab3/src/parent.cpp ../lab3/include/lab3.h)
 add_executable(lab4_lib1_test lab4_lib1_test.cpp)
 add_executable(lab4_lib2_test lab4_lib2_test.cpp)
+add_executable(lab5-7_test lab5-7_test.cpp ../lab5-7/src/tcontroller.cpp ../lab5-7/src/tmessaging.cpp ../lab5-7/src/tsearch.cpp ../lab5-7/src/ttopology.cpp ../lab5-7/src/tworker.cpp)
 
 # Установка Google Test
 include(FetchContent)
@@ -18,18 +19,21 @@ target_link_libraries(lab2_test PRIVATE gtest_main)
 target_link_libraries(lab3_test PRIVATE gtest_main)
 target_link_libraries(lab4_lib1_test PRIVATE gtest_main lib1)
 target_link_libraries(lab4_lib2_test PRIVATE gtest_main lib2)
+target_link_libraries(lab5-7_test PRIVATE gtest_main zmq)
 
 target_include_directories(lab1_test PRIVATE ../lab1/include)
 target_include_directories(lab2_test PRIVATE ../lab2/include)
 target_include_directories(lab3_test PRIVATE ../lab3/include)
 target_include_directories(lab4_lib1_test PRIVATE ../lab4/include)
 target_include_directories(lab4_lib2_test PRIVATE ../lab4/include)
+target_include_directories(lab5-7_test PRIVATE ../lab5-7/include)
 
 add_test(lab1_test lab1_test)
 add_test(lab2_test lab2_test)
 add_test(lab3_test lab3_test)
 add_test(lab4_lib1_test lab4_lib1_test)
 add_test(lab4_lib2_test lab4_lib2_test)
+add_test(lab5-7_test lab5-7_test)
 
 include(GoogleTest)
 
@@ -38,3 +42,4 @@ gtest_discover_tests(lab2_test)
 gtest_discover_tests(lab3_test)
 gtest_discover_tests(lab4_lib1_test)
 gtest_discover_tests(lab4_lib2_test)
+gtest_discover_tests(lab5-7_test)
