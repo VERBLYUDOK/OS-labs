@@ -51,7 +51,7 @@ void TWorkerNode::Run() {
             // Завершаем работу узла
             running_ = false;
             pthread_mutex_lock(&g_print_mutex);
-            std::cerr << "Worker " << id_ << " quitting...\n";
+            std::cerr << id_ << " quitting...\n";
             pthread_mutex_unlock(&g_print_mutex);
             break;
         }
