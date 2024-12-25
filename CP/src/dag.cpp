@@ -66,7 +66,7 @@ bool TDagExecutor::ReadIni(const std::string &filename) {
         }
 
         if (line.empty() || line[0] == '#') {
-            continue; // пропускаем комментарии/пустые строки
+            continue; // Пропускаем комментарии/пустые строки
         }
         if (line == "[Jobs]") {
             currentSection = ESection::Jobs;
@@ -172,16 +172,14 @@ bool TDagExecutor::ReadIni(const std::string &filename) {
 // ----------------------------------------------------------------------------
 bool TDagExecutor::CheckSingleComponent() {
     if (Jobs_.empty()) {
-        // Пустой граф — на ваш выбор, считаем "ошибка"
         return false;
     }
 
-    // Построим "неориентированные" связи
+    // Построим неориентированные связи
     std::map<int, std::vector<int>> undirected;
     for (auto &kv : Jobs_) {
         int id = kv.first;
-        undirected[id]; // чтобы существовал пустой вектор
-        // Добавим детей (u->v => u--v, v--u)
+        undirected[id];
         for (int child : kv.second.Children) {
             undirected[id].push_back(child);
             undirected[child].push_back(id);
@@ -192,7 +190,7 @@ bool TDagExecutor::CheckSingleComponent() {
     auto it = Jobs_.begin();
     int startId = it->first;
 
-    // DFS/BFS
+    // DFS
     std::vector<int> stack;
     stack.push_back(startId);
     std::set<int> visited;
@@ -209,17 +207,14 @@ bool TDagExecutor::CheckSingleComponent() {
         }
     }
 
-    // Если посетили все джобы -> одна компонента
+    // Если посетили все джобы, то одна компонента
     return (visited.size() == Jobs_.size());
 }
 
 // ----------------------------------------------------------------------------
-// Проверяем граф на наличие цикла (DFS-рекурсивный стек)
+// Проверяем граф на наличие цикла
 // ----------------------------------------------------------------------------
-bool TDagExecutor::HasCycleUtil(int jobId,
-                                std::map<int, bool> &visited,
-                                std::map<int, bool> &recStack) 
-{
+bool TDagExecutor::HasCycleUtil(int jobId, std::map<int, bool> &visited, std::map<int, bool> &recStack) {
     if (!visited[jobId]) {
         visited[jobId] = true;
         recStack[jobId] = true;
@@ -275,7 +270,7 @@ bool TDagExecutor::CheckStartFinish() {
 }
 
 // ----------------------------------------------------------------------------
-// Проверяем, «разблокирован» ли барьер (Remaining == 0)
+// Проверяем, «разблокирован» ли барьер
 // ----------------------------------------------------------------------------
 bool TDagExecutor::IsBarrierUnlocked(const std::string &barrierName) {
     if (barrierName.empty()) {
@@ -296,9 +291,18 @@ bool TDagExecutor::IsBarrierUnlocked(const std::string &barrierName) {
     return unlocked;
 }
 
+bool TDagExecutor::AreAllParentBarriersUnlocked(int& childId) { 
+    for (int parentId : Jobs_[childId].Dependencies) {        
+        const std::string &parentBarrier = Jobs_[parentId].BarrierName;
+        if (!parentBarrier.empty() && !IsBarrierUnlocked(parentBarrier)) {
+            return false;     
+        }
+    }    return true;
+}
+
 // ----------------------------------------------------------------------------
 // Уменьшаем счётчик барьера после окончания джобы.
-// Если дошли до 0 — барьер разблокирован -> пробуждаем всех
+// Если дошли до 0 — барьер разблокирован, пробуждаем всех
 // ----------------------------------------------------------------------------
 void TDagExecutor::BarrierArrive(const std::string &barrierName) {
     if (barrierName.empty()) {
@@ -315,7 +319,7 @@ void TDagExecutor::BarrierArrive(const std::string &barrierName) {
     pthread_mutex_lock(&bg.Mutex);
     bg.Remaining--;
     if (bg.Remaining < 0) {
-        bg.Remaining = 0; // safeguard
+        bg.Remaining = 0;
     }
     if (bg.Remaining == 0) {
         pthread_cond_broadcast(&bg.Cond);
@@ -378,19 +382,23 @@ void* TDagExecutor::JobRunner(void* arg) {
         for (int childId : job.Children) {
             int depsLeft = --Executor->Jobs_[childId].RemainDeps;
             if (depsLeft == 0) {
-                const std::string &childBarrier = Executor->Jobs_[childId].BarrierName;
-                if (Executor->IsBarrierUnlocked(childBarrier)) {
-                    pthread_mutex_lock(&Executor->QueueMutex_);
-                    Executor->ReadyQueue_.push(childId);
-                    pthread_cond_signal(&Executor->QueueCond_);
-                    pthread_mutex_unlock(&Executor->QueueMutex_);
-                } else {
-                    std::ostringstream oss;
-                    oss << "[Thread " << pthread_self() 
-                        << "] Child job " << childId 
-                        << " is ready, but waiting for barrier " 
-                        << childBarrier << " to be unlocked.";
-                    SafePrint(oss.str());
+                while (!Executor->StopExecution_.load()) {
+                    if (Executor->AreAllParentBarriersUnlocked(childId)) {
+                        pthread_mutex_lock(&Executor->QueueMutex_);
+                        Executor->ReadyQueue_.push(childId);
+                        pthread_cond_signal(&Executor->QueueCond_);
+                        pthread_mutex_unlock(&Executor->QueueMutex_);
+                        
+                        break;
+                    } else {
+                        std::ostringstream oss;
+                        oss << "[Thread " << pthread_self()
+                            << "] Child job " << childId
+                            << " is ready, but parent's barrier not unlocked yet. Waiting...";
+                        SafePrint(oss.str());
+
+                        ::sleep(0.3);
+                    }
                 }
             }
         }
@@ -410,7 +418,7 @@ void* TDagExecutor::JobRunner(void* arg) {
 // Основной диспетчер: запускает джобы, контролируя maxParallel
 // ----------------------------------------------------------------------------
 void TDagExecutor::RunDAG() {
-    // Добавим в очередь «стартовые» джобы (remainDeps=0) — БЕЗ проверки барьера
+    // Добавим в очередь «стартовые» джобы (remainDeps=0)
     pthread_mutex_lock(&QueueMutex_);
     for (auto &kv : Jobs_) {
         if (kv.second.RemainDeps.load() == 0) {
@@ -422,7 +430,6 @@ void TDagExecutor::RunDAG() {
     while (true) {
         pthread_mutex_lock(&QueueMutex_);
 
-        // Используем while для защиты от спонтанных пробуждений
         while (ReadyQueue_.empty() &&
                CurrentActiveThreads_.load() > 0 &&
                !StopExecution_.load()) 
@@ -444,7 +451,7 @@ void TDagExecutor::RunDAG() {
         // Пока есть готовые и не превышен лимит — запускаем
         while (!ReadyQueue_.empty() &&
                CurrentActiveThreads_.load() < MaxParallel_ &&
-               !StopExecution_.load()) 
+               !StopExecution_.load())
         {
             int jobId = ReadyQueue_.front();
             ReadyQueue_.pop();

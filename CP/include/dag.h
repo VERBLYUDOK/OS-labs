@@ -29,7 +29,6 @@ class TJob {
 public:
     TJob() = default;
 
-    // Пользовательский конструктор копирования
     TJob(const TJob &other) {
         JobId = other.JobId;
         BarrierName = other.BarrierName;
@@ -40,7 +39,6 @@ public:
         IsSuccess.store(other.IsSuccess.load());
     }
 
-    // Оператор присваивания
     TJob& operator=(const TJob &other) {
         if (this != &other) {
             JobId = other.JobId;
@@ -54,7 +52,6 @@ public:
         return *this;
     }
 
-    // Поля
     int JobId = 0;
     std::string BarrierName;
     std::vector<int> Dependencies;
@@ -111,8 +108,6 @@ public:
     // Запускаем весь DAG
     void RunDAG();
 
-    // --- Дополнительно для тестов ---
-    // Дать доступ к карте джоб (только для отладки/тестов)
     const std::map<int, TJob>& GetJobs() const { return Jobs_; }
     int GetMaxParallel() const { return MaxParallel_; }
 
@@ -125,8 +120,8 @@ private:
 
     void BarrierArrive(const std::string &barrierName);
     bool IsBarrierUnlocked(const std::string &barrierName);
+    bool AreAllParentBarriersUnlocked(int &childId);
 
-private:
     // Основные структуры данных:
     std::map<int, TJob> Jobs_;
     std::map<std::string, TBarrierGroup> BarrierGroups_;
@@ -138,7 +133,6 @@ private:
     // Глобальный флаг остановки (если какая-то джоба упала)
     std::atomic<bool> StopExecution_{false};
 
-    // Мьютекс и условная переменная для ReadyQueue_
     pthread_mutex_t QueueMutex_;
     pthread_cond_t QueueCond_;
 
